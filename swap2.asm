@@ -1,6 +1,6 @@
 .model small
 .data
-    init_array dw 20,30,40,50,-50,-40,-30,-20  ; Двухбайтовый массив чисел
+    init_array dw 20,30,40,50,-50,-40,-30,-20,-2  ; Двухбайтовый массив чисел
     len equ $-init_array
     array dw len dup (?) ; Резервируем место под изменённый массив
     input_msg db 'Innput: ', '$'
