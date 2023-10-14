@@ -1,7 +1,8 @@
 .model small
 .data
     init_array dw 20,30,40,50,-50,-40,-30,-20  ; Двухбайтовый массив чисел
-    array dw 8 dup (?) ; Резервируем место под изменённый массив
+    len equ $-init_array
+    array dw len dup (?) ; Резервируем место под изменённый массив
     input_msg db 'Innput: ', '$'
     output_msg db 'Output: ', '$'
     divider dw 10
@@ -12,7 +13,7 @@
 mov ax, @data
 mov ds, ax
 
-mov cx, 8
+mov cx, len/2
 lea si, init_array
 lea di, array
 
@@ -23,7 +24,7 @@ transport_loop:
     add si, 2        ; Увеличиваем si на 2
     loop transport_loop
 
-mov cx, 4       ; Сколько пар чисел в массиве
+mov cx, len/4       ; Сколько пар чисел в массиве
 lea si, array   ; Загрузка адреса массива в SI
 
 swap_loop:
@@ -36,7 +37,7 @@ swap_loop:
     add si, 4          ; Увеличиваем указатель на 2 байта, переходя к следующей паре элементов
     loop swap_loop     ; Продолжаем цикл, пока не обработаем все элементы
 
-mov cx, 8                    ; Количество элементов в массиве
+mov cx, len/2                  ; Количество элементов в массиве
 lea si, init_array           ; Загрузка адреса массива в SI
 
 mov dx, offset input_msg
@@ -48,7 +49,7 @@ mov ah, 02h    ; Установить функцию 02h - вывод симво
 mov dl, 0Ah    ; Загрузить символ перевода строки (ASCII 10) в dl
 int 21h
 
-mov cx, 8       ; Количество элементов в массиве
+mov cx, len/2       ; Количество элементов в массиве
 lea si, array   ; Загрузка адреса массива в SI
 
 mov dx, offset output_msg
